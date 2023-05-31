@@ -1,0 +1,7 @@
+.boxStlye_img{
+    display :flex;
+    flex-direction: column;
+}
+.img1{
+    margin-right: 8px;
+}

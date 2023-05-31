@@ -1,0 +1,71 @@
+.modal {
+  display: flex;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  max-height: 700px;
+  background-color: white;
+  padding: 40px;
+  border-radius: 16px;
+  flex-direction: column;
+}
+.Btn_update.MuiButton-root {
+  text-transform: none;
+  width: 100%;
+  height: 50px;
+  color: black;
+  border-radius: 10px;
+  background-color: #ffab90;
+  font-size: 15px;
+}
+.Btn_update.MuiButton-root:hover {
+  background-color: #ff5722;
+  color: white;
+  font-weight: bold;
+}
+.Btn_delete.MuiButton-root {
+  text-decoration: underline;
+  color: #ff5722;
+  text-transform: none;
+}
+.Btn_delete.MuiButton-root:hover {
+  background-color: white; text-decoration: underline 
+}
+.fontSize {
+  font-size: 18px;
+}
+.emptyColor {
+  color: #888888;
+}
+.seasonLabel.MuiTypography-root {
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 4px;
+  margin-right: 8px;
+  padding: 4px 8px;
+}
+.spring {
+  background: #e1f0c2;
+}
+.summer {
+  background: #f0c2c2;
+}
+.fall {
+  background: #f6d9b6;
+}
+.winter {
+  background: #c2ccf0;
+}
+.memo {
+  margin-top: 8px;
+}
+.memo .MuiInputBase-input.Mui-disabled {
+  color: black;
+  font-size: 15px;
+  -webkit-text-fill-color: #000000;
+}
+.memo .MuiOutlinedInput-root {
+  padding: 12px;
+}

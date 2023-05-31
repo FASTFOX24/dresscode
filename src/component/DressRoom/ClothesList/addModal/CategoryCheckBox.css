@@ -1,0 +1,28 @@
+.seasonBtn {
+  border-radius: 99px !important;
+  flex: 1 0 0;
+  height: 33px;
+  border: 2px solid #888888 !important;
+  margin: 8px 2px !important;
+}
+.spring.MuiToggleButton-root.Mui-selected,
+.spring.MuiToggleButton-root.Mui-selected:hover {
+  background-color: #c9f0c2;
+}
+.summer.MuiToggleButton-root.Mui-selected,
+.summer.MuiToggleButton-root.Mui-selected:hover {
+  background-color: #f0c2c2;
+}
+.fall.MuiToggleButton-root.Mui-selected,
+.fall.MuiToggleButton-root.Mui-selected:hover {
+  background-color: #f6d9b6;
+}
+.winter.MuiToggleButton-root.Mui-selected,
+.winter.MuiToggleButton-root.Mui-selected:hover {
+  background-color: #c2ccf0;
+}
+.categoryBtn.MuiToggleButton-root.Mui-selected,
+.categoryBtn.MuiToggleButton-root.Mui-selected:hover {
+  color: white;
+  background-color: #191919;
+}

@@ -1,0 +1,33 @@
+.navBar {
+  position: sticky;
+  top: 0;
+  background-color: #191919;
+  height: 80px;
+  justify-content: space-between;
+  padding: 0 50px;
+  z-index: 99;
+}
+.title.MuiTypography-root {
+  font-family: cursive;
+  font-weight: bold;
+  text-align: center;
+  color: white;
+}
+.navButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+}
+.none {
+  color: white;
+}
+.none:hover {
+  font-weight: bold;
+}
+.active {
+  color: #ff5722;
+  border-bottom: 3px solid #ff5722;
+  padding-top: 3px;
+  font-weight: bold;
+}

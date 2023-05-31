@@ -1,0 +1,20 @@
+.textField_short {
+  width: 49%;
+}
+.textField_long.MuiTextField-root {
+  margin-top: 16px;
+}
+.outlineColor label.Mui-focused {
+  color: #191919;
+}
+.outlineColor .MuiOutlinedInput-root fieldset {
+  border-color: #191919;
+}
+
+.outlineColor .MuiOutlinedInput-root:hover fieldset {
+  border-color: #191919;
+}
+
+.outlineColor .MuiOutlinedInput-root.Mui-focused fieldset {
+  border-color: #191919;
+}
