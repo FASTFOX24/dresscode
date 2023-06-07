@@ -32,7 +32,7 @@ const ClothesList = ({ clothesList, openClothesModal }) => {
             src={e.imageUrl_1}
             style={{ width: "300px", height: "300px" }}
             onClick={() => {
-              openClothesModal(index);
+              openClothesModal(e.id);
             }}
           />
           <Box

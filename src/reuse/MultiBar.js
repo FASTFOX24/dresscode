@@ -1,9 +1,9 @@
-import { Box, Button, Grid, Popover, Typography } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import React, { useState } from "react";
 import ProfileModal from "../component/TitleBar/ProfileModal";
 import "./MultiBar.css";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 const buttonStyle = {
   textTransform: "none",
   color: "white",
@@ -21,10 +21,10 @@ const MultiBar = ({ isLoggedIn, userInfo }) => {
   return (
     <Grid container className="navBar">
       <Box sx={{ display: "flex", alignItems: "center" }}>
-        <Link to="/" style={{textDecoration:"none"}}>
-        <Typography variant="h3" className="title">
-          DressCode
-        </Typography>
+        <Link to="/" style={{ textDecoration: "none" }}>
+          <Typography variant="h3" className="title">
+            DressCode
+          </Typography>
         </Link>
       </Box>
       <Box
@@ -53,7 +53,7 @@ const MultiBar = ({ isLoggedIn, userInfo }) => {
           <Button sx={buttonStyle} onClick={handleClick}>
             <AccountCircleIcon sx={{ width: "23px", height: "23px" }} />
             <Typography sx={{ fontSize: "15px", ml: "4px" }}>
-              {userInfo.nickname}
+              {userInfo.nickname ? userInfo.nickname : "Unknown"}
             </Typography>
           </Button>
         ) : (

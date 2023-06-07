@@ -6,20 +6,13 @@ import SubBar from "../../reuse/SubBar";
 import EmptyList from "../../reuse/EmptyList";
 import ClothesModal from "./ClothesList/clothesInfoModal/ClothesModal";
 import RemoveDialog from "../../reuse/RemoveDialog";
-import {
-  collection,
-  deleteDoc,
-  doc,
-  onSnapshot,
-  query,
-  where,
-} from "firebase/firestore";
+import { collection, doc, onSnapshot, query } from "firebase/firestore";
 import { auth, db } from "../../firebase/firebase";
-import { deleteObject, getStorage, ref } from "firebase/storage";
 import EmptyFilteredList from "./EmptyFilteredList";
 import AddDressPopup from "./AddDressPopup";
 import { useRecoilState } from "recoil";
 import { clothesData } from "../../shared/data";
+import { updateClothes, uploadClothes } from "../../apis/wapperFunction";
 const fabStyle = {
   position: "sticky",
   top: "85vh",
@@ -39,27 +32,27 @@ const DressRoom = () => {
   const [seasonFilter, setSeasonFilter] = useState("");
   const [clothesCategory, setClothesCategory] = useState("");
   const [filteredClothesList, setFilteredClothesList] = useState([]);
-  const [idx, setIdx] = useState(null);
+  const [docId, setDocId] = useState(null);
   const [openAddPopup, setOpenAddPopup] = useState(false);
   const [clothesModal, setClothesModal] = useState(false);
-  const [updateModal, setUpdateModal] = useState(false);
+  const [openUpdatePopup, setOpenUpdatePopup] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const handleOpen = () => setOpenAddPopup(true);
   const handleClose = () => setOpenAddPopup(false);
-  const openClothesModal = (index) => {
-    setIdx(index);
+  const openClothesModal = (docId) => {
+    setDocId(docId);
     setClothesModal(true);
   };
   const closeClothesModal = () => {
-    setIdx(null);
+    setDocId(null);
     setClothesModal(false);
   };
   const updateClick = () => {
     setClothesModal(false);
-    setUpdateModal(true);
+    setOpenUpdatePopup(true);
   };
   const updateDone = () => {
-    setUpdateModal(false);
+    setOpenUpdatePopup(false);
     setClothesModal(true);
   };
   const buttonClick = async (event) => {
@@ -71,11 +64,11 @@ const DressRoom = () => {
     } else if (name === "closeDialog") {
       setDialogOpen(false);
     } else if (name === "deleteClick") {
-      await deleteObject(ref(getStorage(), clothesList[idx].urlName));
-      await deleteObject(ref(getStorage(), clothesList[idx].url2Name));
-      await deleteDoc(doc(db, "Clothes", clothesList[idx].docName));
-      setDialogOpen(false);
-      closeClothesModal();
+      // await deleteObject(ref(getStorage(), clothesList[idx].urlName));
+      // await deleteObject(ref(getStorage(), clothesList[idx].url2Name));
+      // await deleteDoc(doc(db, "Clothes", clothesList[idx].docName));
+      // setDialogOpen(false);
+      // closeClothesModal();
     } else if (name === "favoriteClothes") {
       console.log("update clothes favorite mark");
     }
@@ -124,8 +117,7 @@ const DressRoom = () => {
     (async () => {
       const user = auth.currentUser;
       const clothesQuery = query(
-        collection(db, "clothes"),
-        where("id", "==", user.uid)
+        collection(doc(db, "User", user.uid), "clothes")
       );
       onSnapshot(clothesQuery, (queryShanpshot) => {
         const clothesData = [];
@@ -184,26 +176,35 @@ const DressRoom = () => {
       </Box>
 
       {openAddPopup ? (
-        <AddDressPopup open={openAddPopup} handleClose={handleClose} />
+        <AddDressPopup
+          open={openAddPopup}
+          handleClose={handleClose}
+          handleClothesData={uploadClothes}
+        />
       ) : (
         <></>
       )}
-      {idx !== null ? (
+      {docId !== null ? (
         <ClothesModal
           modalOpen={clothesModal}
           closeModal={closeClothesModal}
-          selectedClothes={clothesList[idx]}
+          selectedClothes={
+            clothesList.filter((clothes) => clothes.id === docId)[0]
+          }
           updateClick={updateClick}
           buttonClick={buttonClick}
         />
       ) : (
         <></>
       )}
-      {updateModal ? (
+      {openUpdatePopup ? (
         <AddDressPopup
-          open={updateModal}
+          open={openUpdatePopup}
           handleClose={updateDone}
-          selectedClothes={clothesList[idx]}
+          selectedClothes={
+            clothesList.filter((clothes) => clothes.id === docId)[0]
+          }
+          handleClothesData={updateClothes}
         />
       ) : (
         <></>

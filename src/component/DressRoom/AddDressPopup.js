@@ -12,15 +12,10 @@ import {
 } from "@mui/material";
 import "./ImageCropper.css";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { uuidv4 } from "@firebase/util";
 import React, { forwardRef, useState } from "react";
-import { auth, db } from "../../firebase/firebase";
-import { getStorage, ref } from "firebase/storage";
-import { collection, doc, setDoc } from "firebase/firestore";
 import AddPicture from "./ClothesList/addModal/AddPicture";
 import CategoryCheckBox from "./ClothesList/addModal/CategoryCheckBox";
 import MoreInfo from "../../reuse/MoreInfo";
-import { upload } from "../../apis/uploadBytes";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -35,8 +30,12 @@ const buttonStyle = {
   },
 };
 
-const AddDressPopup = ({ open, handleClose, selectedClothes }) => {
-  const user = auth.currentUser;
+const AddDressPopup = ({
+  open,
+  handleClose,
+  selectedClothes,
+  handleClothesData,
+}) => {
   const [alert, setAlert] = useState({
     alertOpen: false,
     vertical: "top",
@@ -74,38 +73,14 @@ const AddDressPopup = ({ open, handleClose, selectedClothes }) => {
       details: null,
     });
   };
-  const uploadClothes = async () => {
-    const { uploadUrl_0, uploadUrl_1 } = imgData;
-    const { season, part, brand, price, details } = clothesData;
-    if (!uploadUrl_0 || season.length === 0 || part === "") {
+  const clickSaveBtn = async () => {
+    const { img_0, uploadUrl_0 } = imgData;
+    const { season, part } = clothesData;
+    if ((!img_0 && !uploadUrl_0) || season.length === 0 || part === "") {
       setAlert({ ...alert, alertOpen: true });
-    }
-    if (uploadUrl_0 && season.length !== 0 && part !== "") {
-      const seasonFilter = ["Spring", "Summer", "Fall", "Winter"];
-      const sortedSeason = season.sort((a, b) => {
-        return seasonFilter.indexOf(a) - seasonFilter.indexOf(b);
-      });
-      const storage = getStorage();
-      const spaceRef_1 = ref(storage, `${user.uid}/clothes/${uuidv4()}`);
-      const spaceRef_2 = ref(storage, `${user.uid}/clothes/${uuidv4()}`);
-      const newClothes = {
-        docName: uuidv4(),
-        favorite: false,
-        id: user.uid,
-        imageUrl_1: await upload(spaceRef_1, uploadUrl_0),
-        imageUrl_2: uploadUrl_1 ? await upload(spaceRef_2, uploadUrl_1) : null,
-        season: sortedSeason,
-        part: part,
-        brand: brand,
-        price: price,
-        details: details,
-      };
-      const collectionRef = collection(db, "clothes");
-      await setDoc(doc(collectionRef, newClothes.docName), newClothes).catch(
-        (err) => {
-          console.log(err);
-        }
-      );
+      return;
+    } else {
+      await handleClothesData(imgData, clothesData, selectedClothes?.id);
       resetAll();
       handleClose();
     }
@@ -134,7 +109,7 @@ const AddDressPopup = ({ open, handleClose, selectedClothes }) => {
             >
               <ArrowBackIcon sx={{ color: "white" }} />
             </IconButton>
-            <Button sx={buttonStyle} onClick={uploadClothes}>
+            <Button sx={buttonStyle} onClick={clickSaveBtn}>
               <Typography>Save</Typography>
             </Button>
           </Toolbar>
