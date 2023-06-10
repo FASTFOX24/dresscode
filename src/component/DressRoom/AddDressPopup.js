@@ -16,6 +16,8 @@ import React, { forwardRef, useState } from "react";
 import AddPicture from "./ClothesList/addModal/AddPicture";
 import CategoryCheckBox from "./ClothesList/addModal/CategoryCheckBox";
 import MoreInfo from "../../reuse/MoreInfo";
+import LoadginBackDrop from "../../reuse/LoadginBackDrop";
+import { backDropMessages } from "../../shared/MSGS";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -36,6 +38,7 @@ const AddDressPopup = ({
   selectedClothes,
   handleClothesData,
 }) => {
+  const [backdrop, setBackDrop] = useState(false);
   const [alert, setAlert] = useState({
     alertOpen: false,
     vertical: "top",
@@ -80,7 +83,9 @@ const AddDressPopup = ({
       setAlert({ ...alert, alertOpen: true });
       return;
     } else {
+      setBackDrop(true);
       await handleClothesData(imgData, clothesData, selectedClothes?.id);
+      setBackDrop(false);
       resetAll();
       handleClose();
     }
@@ -140,6 +145,7 @@ const AddDressPopup = ({
           />
           <MoreInfo clothesData={clothesData} setClothesData={setClothesData} />
         </Box>
+       <LoadginBackDrop backdrop={backdrop} loadingMessage={backDropMessages.uploading}/>
       </Dialog>
     </>
   );
