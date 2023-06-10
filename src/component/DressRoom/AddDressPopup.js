@@ -145,7 +145,10 @@ const AddDressPopup = ({
           />
           <MoreInfo clothesData={clothesData} setClothesData={setClothesData} />
         </Box>
-       <LoadginBackDrop backdrop={backdrop} loadingMessage={backDropMessages.uploading}/>
+        <LoadginBackDrop
+          backdrop={backdrop}
+          loadingMessage={backDropMessages.uploading}
+        />
       </Dialog>
     </>
   );

@@ -122,7 +122,7 @@ const DressRoom = () => {
       onSnapshot(clothesQuery, (queryShanpshot) => {
         const clothesData = [];
         queryShanpshot.forEach((doc) => {
-          clothesData.push(doc.data());
+          clothesData.push({ id: doc.id, data: doc.data() });
         });
         setClothesList(...[clothesData]);
       });
@@ -189,7 +189,7 @@ const DressRoom = () => {
           modalOpen={clothesModal}
           closeModal={closeClothesModal}
           selectedClothes={
-            clothesList.filter((clothes) => clothes.id === docId)[0]
+            clothesList.filter((clothes) => clothes.id === docId)[0].data
           }
           updateClick={updateClick}
           buttonClick={buttonClick}
@@ -202,7 +202,7 @@ const DressRoom = () => {
           open={openUpdatePopup}
           handleClose={updateDone}
           selectedClothes={
-            clothesList.filter((clothes) => clothes.id === docId)[0]
+            clothesList.filter((clothes) => clothes.id === docId)[0].data
           }
           handleClothesData={updateClothes}
         />

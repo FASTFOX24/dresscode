@@ -34,7 +34,6 @@ const handleClothes = async (imgData, clothesData, id) => {
   const spaceRef_1 = ref(storage, `${user.uid}/clothes/${uuidv4()}`);
   const spaceRef_2 = ref(storage, `${user.uid}/clothes/${uuidv4()}`);
   const newClothes = {
-    id: id ? id : uuidv4(),
     imageUrl_1: uploadUrl_0 ? await upload(spaceRef_1, uploadUrl_0) : img_0,
     imageUrl_2: uploadUrl_1
       ? await upload(spaceRef_2, uploadUrl_1)
@@ -55,7 +54,7 @@ export const uploadClothes = async (imgData, clothesData) => {
   const clothes = await handleClothes(imgData, clothesData);
   const userDocRef = doc(db, "User", user.uid);
   const clothesCollectionRef = collection(userDocRef, "clothes");
-  await setDoc(doc(clothesCollectionRef, uuidv4()), clothes).catch((err) => {
+  await setDoc(doc(clothesCollectionRef), clothes).catch((err) => {
     console.log(err);
   });
 };
@@ -69,3 +68,9 @@ export const updateClothes = async (imgData, clothesData, id) => {
   const clothesDocRef = doc(clothesCollectionRef, docName);
   await updateDoc(clothesDocRef, clothes);
 };
+export const deleteClothes = async (docName) => {
+  const user = auth.currentUser;
+  const userDocRef = doc(db,"User",user.uid)
+  const clothesCollectionRef = collection(userDocRef,"clothes")
+  const clothesDocRef = doc(clothesCollectionRef,"")
+}

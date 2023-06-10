@@ -29,7 +29,7 @@ const ClothesList = ({ clothesList, openClothesModal }) => {
         >
           <img
             alt="image_clothes"
-            src={e.imageUrl_1}
+            src={e.data.imageUrl_1}
             style={{ width: "300px", height: "300px" }}
             onClick={() => {
               openClothesModal(e.id);
@@ -45,7 +45,7 @@ const ClothesList = ({ clothesList, openClothesModal }) => {
             }}
           >
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              {e.season.map((c, idx2) => {
+              {e.data.season.map((c, idx2) => {
                 return (
                   <Typography
                     key={idx2}
@@ -68,7 +68,7 @@ const ClothesList = ({ clothesList, openClothesModal }) => {
               defaultChecked={e.favorite ? true : false}
               sx={{ width: "14px", height: "14px" }}
               onClick={(ev) => {
-                addFavoriteClothes(ev.target.checked, e);
+                addFavoriteClothes(ev.target.checked, e.data);
               }}
               icon={<FavoriteBorder sx={{ width: "23px" }} />}
               checkedIcon={<Favorite sx={{ color: "#FD4949" }} />}
