@@ -30,7 +30,7 @@ const ClothesList = ({ clothesList, openClothesModal }) => {
           <img
             alt="image_clothes"
             src={e.data.imageUrl_1}
-            style={{ width: "300px", height: "300px" }}
+            style={{ width: "300px", height: "300px",borderRadius:"8px" }}
             onClick={() => {
               openClothesModal(e.id);
             }}

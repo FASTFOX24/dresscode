@@ -5,7 +5,6 @@ import AddSomethingIcon from "../../reuse/AddSomethingIcon";
 import SubBar from "../../reuse/SubBar";
 import EmptyList from "../../reuse/EmptyList";
 import ClothesModal from "./ClothesList/clothesInfoModal/ClothesModal";
-import RemoveDialog from "../../reuse/RemoveDialog";
 import { collection, doc, onSnapshot, query } from "firebase/firestore";
 import { auth, db } from "../../firebase/firebase";
 import EmptyFilteredList from "./EmptyFilteredList";
@@ -13,6 +12,8 @@ import AddDressPopup from "./AddDressPopup";
 import { useRecoilState } from "recoil";
 import { clothesData } from "../../shared/data";
 import { updateClothes, uploadClothes } from "../../apis/wapperFunction";
+import LoadingBackDrop from "../../reuse/LoadingBackDrop";
+import { backDropMessages } from "../../shared/MSGS";
 const fabStyle = {
   position: "sticky",
   top: "85vh",
@@ -35,8 +36,8 @@ const DressRoom = () => {
   const [docId, setDocId] = useState(null);
   const [openAddPopup, setOpenAddPopup] = useState(false);
   const [clothesModal, setClothesModal] = useState(false);
+  const [backDrop, setBackDrop] = useState(false);
   const [openUpdatePopup, setOpenUpdatePopup] = useState(false);
-  const [dialogOpen, setDialogOpen] = useState(false);
   const handleOpen = () => setOpenAddPopup(true);
   const handleClose = () => setOpenAddPopup(false);
   const openClothesModal = (docId) => {
@@ -55,24 +56,6 @@ const DressRoom = () => {
     setOpenUpdatePopup(false);
     setClothesModal(true);
   };
-  const buttonClick = async (event) => {
-    const {
-      target: { name },
-    } = event;
-    if (name === "openDialog") {
-      setDialogOpen(true);
-    } else if (name === "closeDialog") {
-      setDialogOpen(false);
-    } else if (name === "deleteClick") {
-      // await deleteObject(ref(getStorage(), clothesList[idx].urlName));
-      // await deleteObject(ref(getStorage(), clothesList[idx].url2Name));
-      // await deleteDoc(doc(db, "Clothes", clothesList[idx].docName));
-      // setDialogOpen(false);
-      // closeClothesModal();
-    } else if (name === "favoriteClothes") {
-      console.log("update clothes favorite mark");
-    }
-  };
   const changeFilter = (event) => {
     const {
       target: { name, value },
@@ -89,14 +72,14 @@ const DressRoom = () => {
       setFilteredClothesList([]);
     } else if (seasonFilter !== "" && clothesCategory === "") {
       clothesList.forEach((element) => {
-        if (element.season.includes(seasonFilter)) {
+        if (element.data.season.includes(seasonFilter)) {
           filteredClothesList.push(element);
         }
       });
       setFilteredClothesList([...filteredClothesList]);
     } else if (seasonFilter === "" && clothesCategory !== "") {
       clothesList.forEach((element) => {
-        if (element.part.includes(clothesCategory)) {
+        if (element.data.part.includes(clothesCategory)) {
           filteredClothesList.push(element);
         }
       });
@@ -104,8 +87,8 @@ const DressRoom = () => {
     } else if (seasonFilter !== "" && clothesCategory !== "") {
       clothesList.forEach((element) => {
         if (
-          element.season.includes(seasonFilter) &&
-          element.part.includes(clothesCategory)
+          element.data.season.includes(seasonFilter) &&
+          element.data.part.includes(clothesCategory)
         ) {
           filteredClothesList.push(element);
         }
@@ -174,7 +157,6 @@ const DressRoom = () => {
           </>
         )}
       </Box>
-
       {openAddPopup ? (
         <AddDressPopup
           open={openAddPopup}
@@ -189,10 +171,10 @@ const DressRoom = () => {
           modalOpen={clothesModal}
           closeModal={closeClothesModal}
           selectedClothes={
-            clothesList.filter((clothes) => clothes.id === docId)[0].data
+            clothesList.filter((clothes) => clothes.id === docId)[0]
           }
           updateClick={updateClick}
-          buttonClick={buttonClick}
+          setBackDrop={setBackDrop}
         />
       ) : (
         <></>
@@ -202,14 +184,17 @@ const DressRoom = () => {
           open={openUpdatePopup}
           handleClose={updateDone}
           selectedClothes={
-            clothesList.filter((clothes) => clothes.id === docId)[0].data
+            clothesList.filter((clothes) => clothes.id === docId)[0]
           }
           handleClothesData={updateClothes}
         />
       ) : (
         <></>
       )}
-      <RemoveDialog dialogOpen={dialogOpen} buttonClick={buttonClick} />
+      <LoadingBackDrop
+        backdrop={backDrop}
+        loadingMessage={backDropMessages.delete}
+      />
     </Box>
   );
 };

@@ -1,10 +1,10 @@
-import { getStorage, ref } from "firebase/storage";
+import { deleteObject, getStorage, ref } from "firebase/storage";
 import { uuidv4 } from "@firebase/util";
 import { upload } from "./uploadBytes";
 import {
   collection,
+  deleteDoc,
   doc,
-  getDocs,
   setDoc,
   updateDoc,
 } from "firebase/firestore";
@@ -26,7 +26,7 @@ export const shortSeason = (season) => {
     return seasonFilter.indexOf(a) - seasonFilter.indexOf(b);
   });
 };
-const handleClothes = async (imgData, clothesData, id) => {
+const handleClothes = async (imgData, clothesData) => {
   const user = auth.currentUser;
   const { uploadUrl_0, img_0, uploadUrl_1, img_1 } = imgData;
   const { season, part, brand, price, details } = clothesData;
@@ -60,17 +60,23 @@ export const uploadClothes = async (imgData, clothesData) => {
 };
 export const updateClothes = async (imgData, clothesData, id) => {
   const user = auth.currentUser;
-  const clothes = await handleClothes(imgData, clothesData, id);
+  const clothes = await handleClothes(imgData, clothesData);
   const userDocRef = doc(db, "User", user.uid);
   const clothesCollectionRef = collection(userDocRef, "clothes");
-  const querySnapshot = await getDocs(clothesCollectionRef);
-  const docName = querySnapshot.docs.find((doc) => doc.data().id === id).id;
-  const clothesDocRef = doc(clothesCollectionRef, docName);
+  const clothesDocRef = doc(clothesCollectionRef, id);
   await updateDoc(clothesDocRef, clothes);
 };
-export const deleteClothes = async (docName) => {
+export const deleteClothes = async (docName, clothesData) => {
+  const { imageUrl_1, imageUrl_2 } = clothesData;
+  const storage = getStorage();
   const user = auth.currentUser;
-  const userDocRef = doc(db,"User",user.uid)
-  const clothesCollectionRef = collection(userDocRef,"clothes")
-  const clothesDocRef = doc(clothesCollectionRef,"")
-}
+  const userDocRef = doc(db, "User", user.uid);
+  const clothesCollectionRef = collection(userDocRef, "clothes");
+  await deleteDoc(doc(clothesCollectionRef, docName));
+  const spaceRef_1 = ref(storage, imageUrl_1);
+  await deleteObject(spaceRef_1);
+  if (imageUrl_2) {
+    const spaceRef_2 = ref(storage, imageUrl_2);
+    await deleteObject(spaceRef_2);
+  }
+};

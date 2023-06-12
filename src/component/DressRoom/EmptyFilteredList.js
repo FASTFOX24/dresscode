@@ -40,11 +40,11 @@ const EmptyFilteredList = ({ handleOpen }) => {
             mt: 4,
             textTransform: "none",
             color: "black",
-            bgcolor: "#a6d4f7",
+            bgcolor: "#ffab90",
             boxShadow: 3,
             "&:hover": {
               fontWeight: 600,
-              bgcolor: "#39A9FE",
+              bgcolor: "#ff5722",
             },
           }}
         >

@@ -27,7 +27,7 @@
 }
 .Btn_delete.MuiButton-root {
   text-decoration: underline;
-  color: #ff5722;
+  color: red;
   text-transform: none;
 }
 .Btn_delete.MuiButton-root:hover {

@@ -16,8 +16,8 @@ import React, { forwardRef, useState } from "react";
 import AddPicture from "./ClothesList/addModal/AddPicture";
 import CategoryCheckBox from "./ClothesList/addModal/CategoryCheckBox";
 import MoreInfo from "../../reuse/MoreInfo";
-import LoadginBackDrop from "../../reuse/LoadginBackDrop";
 import { backDropMessages } from "../../shared/MSGS";
+import LoadingBackDrop from "../../reuse/LoadingBackDrop";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -31,7 +31,6 @@ const buttonStyle = {
     bgcolor: "#ff5722",
   },
 };
-
 const AddDressPopup = ({
   open,
   handleClose,
@@ -49,17 +48,17 @@ const AddDressPopup = ({
     setAlert({ ...alert, alertOpen: false });
   };
   const [imgData, setImgData] = useState({
-    img_0: selectedClothes?.imageUrl_1 || null,
+    img_0: selectedClothes?.data.imageUrl_1 || null,
     uploadUrl_0: null,
-    img_1: selectedClothes?.imageUrl_2 || null,
+    img_1: selectedClothes?.data.imageUrl_2 || null,
     uploadUrl_1: null,
   });
   const [clothesData, setClothesData] = useState({
-    season: selectedClothes?.season || [],
-    part: selectedClothes?.part || null,
-    brand: selectedClothes?.brand || null,
-    price: selectedClothes?.price || null,
-    details: selectedClothes?.details || null,
+    season: selectedClothes?.data.season || [],
+    part: selectedClothes?.data.part || null,
+    brand: selectedClothes?.data.brand || null,
+    price: selectedClothes?.data.price || null,
+    details: selectedClothes?.data.details || null,
   });
   const resetAll = () => {
     setImgData({
@@ -145,7 +144,7 @@ const AddDressPopup = ({
           />
           <MoreInfo clothesData={clothesData} setClothesData={setClothesData} />
         </Box>
-        <LoadginBackDrop
+        <LoadingBackDrop
           backdrop={backdrop}
           loadingMessage={backDropMessages.uploading}
         />

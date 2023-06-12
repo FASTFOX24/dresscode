@@ -2,16 +2,32 @@ import { Box, Button, IconButton, Modal, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import SavedClothesImage from "./SavedClothesImage";
 import SavedInfo from "../../../../reuse/SavedInfo";
-import { digitsNumber } from "../../../../apis/wapperFunction";
+import { deleteClothes, digitsNumber } from "../../../../apis/wapperFunction";
+import RemoveDialog from "../../../../reuse/RemoveDialog";
+import { useState } from "react";
 import "./ClothesModal.css";
 const ClothesModal = ({
   modalOpen,
   closeModal,
   selectedClothes,
   updateClick,
-  buttonClick,
+  setBackDrop,
 }) => {
-  const { brand, part, price } = selectedClothes;
+  const { brand, part, price } = selectedClothes.data;
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const handleOpen = () => setDialogOpen(true);
+  const handleClose = () => setDialogOpen(false);
+  const deleteData = async () => {
+    try {
+      setDialogOpen(false);
+      setBackDrop(true);
+      closeModal();
+      await deleteClothes(selectedClothes.id, selectedClothes.data);
+      setBackDrop(false);
+    } catch (error) {
+      console.error("Error deleting : ", error);
+    }
+  };
   return (
     <Modal open={modalOpen} onClose={closeModal}>
       <Box className="modal">
@@ -47,8 +63,8 @@ const ClothesModal = ({
             <CloseIcon />
           </IconButton>
         </Box>
-        <SavedClothesImage selectedClothes={selectedClothes} />
-        <SavedInfo selectedClothes={selectedClothes} />
+        <SavedClothesImage selectedClothes={selectedClothes.data} />
+        <SavedInfo selectedClothes={selectedClothes.data} />
         <Box
           sx={{
             display: "flex",
@@ -60,14 +76,19 @@ const ClothesModal = ({
           <Button onClick={updateClick} className="Btn_update">
             Update
           </Button>
-          <Button
-            name="openDialog"
-            onClick={buttonClick}
-            className="Btn_delete"
-          >
+          <Button onClick={handleOpen} className="Btn_delete">
             Delete
           </Button>
         </Box>
+        {dialogOpen ? (
+          <RemoveDialog
+            dialogOpen={dialogOpen}
+            handleClose={handleClose}
+            doneClick={deleteData}
+          />
+        ) : (
+          <></>
+        )}
       </Box>
     </Modal>
   );

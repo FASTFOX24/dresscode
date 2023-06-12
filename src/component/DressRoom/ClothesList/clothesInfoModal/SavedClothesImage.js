@@ -15,6 +15,7 @@ const boxStyle = {
 const imgStyle = {
   width: "240px",
   height: "240px",
+  borderRadius: "8px",
 };
 const informationText = {
   display: "flex",
@@ -37,13 +38,13 @@ const SavedClothesImage = ({ selectedClothes }) => {
       {imageArr.map((image, idx) => {
         return image ? (
           <Box
-            key={"dressImage" + `${idx}`}
+            key={`dressImage${idx}`}
             sx={{ display: "flex", flexDirection: "column" }}
           >
-            <img src={image} style={imgStyle} />
+            <img alt={`clothes ${idx}`} src={image} style={imgStyle} />
           </Box>
         ) : (
-          <Box key={"dressImage" + `${idx}`} sx={boxStyle}>
+          <Box key={`dressImage${idx}`} sx={boxStyle}>
             <SentimentDissatisfiedIcon sx={iconStyle} />
             <Typography sx={informationText}>
               이미지가 비어있습니다. <br /> 이미지를 추가해보세요!!
