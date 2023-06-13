@@ -31,7 +31,8 @@
   text-transform: none;
 }
 .Btn_delete.MuiButton-root:hover {
-  background-color: white; text-decoration: underline 
+  background-color: white;
+  text-decoration: underline;
 }
 .fontSize {
   font-size: 18px;

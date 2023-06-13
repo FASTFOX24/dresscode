@@ -22,8 +22,8 @@ import validator from "validator";
 import ErrorIcon from "@mui/icons-material/Error";
 const gridStyle = {
   height: "100%",
-  mt:"80px",
-  mb:"80px",
+  mt: "80px",
+  mb: "80px",
   flexDirection: "column",
   alignContent: "space-around",
   justifyContent: "space-around",
@@ -50,7 +50,6 @@ const buttonStyle = {
 };
 
 const JoinMembership = () => {
-  const user = auth.currentUser;
   const [newNickname, setNewNickName] = useState("");
   const [newAccountEmail, setNewAccountEmail] = useState("");
   const [newAccountPassword, setNewAccountPassword] = useState("");
@@ -147,18 +146,11 @@ const JoinMembership = () => {
           const user = userCredential.user;
           await setDoc(doc(db, "User", `${user.uid}`), {
             nickname: newNickname,
-            styleTag: {},
           });
         })
         .then(navigate("/"));
     }
   }, [error1, error2, error3, error4, error5]);
-  const styles = (theme) => ({
-    notchedOutline: {
-      borderWidth: "1px",
-      borderColor: "yellow !important",
-    },
-  });
   return (
     <Grid container sx={gridStyle}>
       <Box
@@ -344,7 +336,6 @@ const JoinMembership = () => {
             >
               Login
             </Button>
-            
           </Link>
         </Box>
       </Box>

@@ -12,8 +12,10 @@ import MultiBar from "../reuse/MultiBar";
 import Footer from "../reuse/Footer";
 import { Box, Grid } from "@mui/material";
 import AddStyle from "./AddStyle/AddStyle";
+import { useRecoilState } from "recoil";
+import { userData } from "../shared/data";
 const AppRoutes = ({ isLoggedIn }) => {
-  const [userInfo, setUserInfo] = useState({});
+  const [userInfo, setUserInfo] = useRecoilState(userData);
   useEffect(() => {
     (async () => {
       if (isLoggedIn) {
@@ -23,7 +25,7 @@ const AppRoutes = ({ isLoggedIn }) => {
         });
       }
     })();
-  }, []);
+  }, [isLoggedIn, setUserInfo]);
   return (
     <Grid container flexDirection={"column"}>
       <Box

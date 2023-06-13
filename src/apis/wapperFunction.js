@@ -9,6 +9,8 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { auth, db } from "../firebase/firebase";
+import { useRecoilValue } from "recoil";
+import { userData } from "../shared/data";
 
 export const digitsNumber = (price) => {
   const numberString = String(price);
@@ -78,5 +80,27 @@ export const deleteClothes = async (docName, clothesData) => {
   if (imageUrl_2) {
     const spaceRef_2 = ref(storage, imageUrl_2);
     await deleteObject(spaceRef_2);
+  }
+};
+export const bookMark = async (docName, list, listName) => {
+  const user = auth.currentUser;
+  const userRef = doc(db, "User", user.uid);
+  if (!list || !list.includes(docName)) {
+    if (list) {
+      await updateDoc(userRef, {
+        [listName]: [...list, docName],
+      });
+    } else {
+      await updateDoc(userRef, {
+        [listName]: [docName],
+      });
+    }
+  } else {
+    const index = list.indexOf(docName);
+    const bookMarkList = list.slice();
+    bookMarkList.splice(index, 1);
+    await updateDoc(userRef, {
+      [listName]: [...bookMarkList],
+    });
   }
 };

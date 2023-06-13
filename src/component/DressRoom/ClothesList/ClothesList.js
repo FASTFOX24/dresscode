@@ -1,26 +1,18 @@
 import React from "react";
-import { Box, Checkbox, Grid, Typography } from "@mui/material";
-import { Favorite, FavoriteBorder } from "@mui/icons-material";
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../../../firebase/firebase";
+import { Box, Grid, Typography } from "@mui/material";
 import "./clothesInfoModal/ClothesModal.css";
+import FavoriteButton from "../../../reuse/FavoriteButton";
+import { useRecoilValue } from "recoil";
+import { userData } from "../../../shared/data";
+import { bookMark } from "../../../apis/wapperFunction";
+
 const ClothesList = ({ clothesList, openClothesModal }) => {
-  const addFavoriteClothes = async (checked, selectedClothes) => {
-    if (checked) {
-      await updateDoc(doc(db, "Clothes", `${selectedClothes.docName}`), {
-        favorite: true,
-      });
-    } else {
-      await updateDoc(doc(db, "Clothes", `${selectedClothes.docName}`), {
-        favorite: false,
-      });
-    }
-  };
+  const userInfo = useRecoilValue(userData);
   return (
     <Grid container flexWrap="wrap">
       {clothesList.map((e, index) => (
         <Box
-          key={index}
+          key={`clothes${index}`}
           sx={{
             flexDirection: "column",
             padding: "0px 10px",
@@ -30,7 +22,7 @@ const ClothesList = ({ clothesList, openClothesModal }) => {
           <img
             alt="image_clothes"
             src={e.data.imageUrl_1}
-            style={{ width: "300px", height: "300px",borderRadius:"8px" }}
+            style={{ width: "300px", height: "300px", borderRadius: "8px" }}
             onClick={() => {
               openClothesModal(e.id);
             }}
@@ -38,7 +30,6 @@ const ClothesList = ({ clothesList, openClothesModal }) => {
           <Box
             sx={{
               display: "flex",
-              mt: "8px",
               width: "100%",
               justifyContent: "space-between",
               alignItems: "center",
@@ -64,14 +55,11 @@ const ClothesList = ({ clothesList, openClothesModal }) => {
                 );
               })}
             </Box>
-            <Checkbox
-              defaultChecked={e.favorite ? true : false}
-              sx={{ width: "14px", height: "14px" }}
-              onClick={(ev) => {
-                addFavoriteClothes(ev.target.checked, e.data);
+            <FavoriteButton
+              checkState={userInfo.clothesBookMark?.includes(e.id)}
+              clickBtn={() => {
+                bookMark(e.id, userInfo.clothesBookMark, "clothesBookMark");
               }}
-              icon={<FavoriteBorder sx={{ width: "23px" }} />}
-              checkedIcon={<Favorite sx={{ color: "#FD4949" }} />}
             />
           </Box>
         </Box>

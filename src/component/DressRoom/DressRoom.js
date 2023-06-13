@@ -20,11 +20,11 @@ const fabStyle = {
   marginBottom: "40px",
   textTransform: "none",
   color: "black",
-  bgcolor: "#FFAB90",
-  width: "100%",
+  bgcolor: "#ff5722",
+  width: "200px",
   boxShadow: 3,
+  fontWeight: 600,
   "&:hover": {
-    fontWeight: 600,
     bgcolor: "#ff5722",
   },
 };
@@ -110,7 +110,7 @@ const DressRoom = () => {
         setClothesList(...[clothesData]);
       });
     })();
-  }, []);
+  }, [setClothesList]);
   return (
     <Box
       sx={{
@@ -132,6 +132,8 @@ const DressRoom = () => {
           width: "100%",
           maxWidth: "1280px",
           flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         {clothesList.length === 0 ? (
